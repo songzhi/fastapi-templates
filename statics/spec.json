@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "MadForms",
+    "version": "3.0.2"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

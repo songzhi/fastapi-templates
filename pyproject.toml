@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "madforms"
+version = "0.1.0"
+description = ""
+authors = ["lsongzhi <lsongzhi@163.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pyjwt = "^1.7.1"
+fastapi = "^0.54.2"
+email-validator = "^1.1.1"
+aiodns = "^2.0.0"
+python-multipart = "^0.0.5"
+motor = "^2.1.0"
+orjson = "^3.0.1"
+click = "^7.1.2"
+uvicorn = "^0.11.5"
+pycryptodome = "^3.9.7"
+attrdict = "^2.0.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+fabric = "^2.5.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
