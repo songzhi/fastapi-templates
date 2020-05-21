@@ -8,12 +8,14 @@ from madforms.app import app
 
 
 @task
-def codegen_ts(c, out_dir='../api'):
-    with NamedTemporaryFile() as fp:
+def codegen_ts(c, out_dir='./api'):
+    with NamedTemporaryFile(suffix=".json") as fp:
         fp.write(orjson.dumps(jsonable_encoder(app.openapi(), by_alias=False)))
+        fp.flush()
+
         c.run(f'openapi --output {out_dir} --input {fp.name} --useOptions')
         with c.cd(out_dir):
-            c.run('git add -A && git commit -m codegen && git pull && git push')
+            c.run('git add -A && git commit -m chore(api):codegen && git pull && git push')
 
 
 @task
