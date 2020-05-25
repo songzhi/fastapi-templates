@@ -4,7 +4,7 @@ import orjson
 from fastapi.encoders import jsonable_encoder
 from invoke import task
 
-from madforms.app import app
+from app.app import app
 
 
 @task

@@ -7,26 +7,19 @@ from starlette.middleware.authentication import AuthenticationMiddleware
 
 from .middlewares.auth import AuthBackend
 from .utils.openapi import custom_openapi
+from .routers import user
 
 FastAPI.openapi = custom_openapi
 
 app = FastAPI(
-    title='MadForms',
+    title='MyApp',
     version='0.1.0',
-    default_response_class=ORJSONResponse
+    default_response_class=ORJSONResponse,
 )
-
-
-@app.get("/")
-def root():
-    pass
 
 
 def on_auth_error(_, exc: Exception):
     return ORJSONResponse({"error": str(exc)}, status_code=401)
-
-
-app.add_middleware(AuthenticationMiddleware, backend=AuthBackend(), on_error=on_auth_error)
 
 
 def set_by_alias_as_false(router: APIRouter) -> APIRouter:
@@ -36,6 +29,10 @@ def set_by_alias_as_false(router: APIRouter) -> APIRouter:
     return router
 
 
+app.add_middleware(AuthenticationMiddleware, backend=AuthBackend(), on_error=on_auth_error)
+app.include_router(set_by_alias_as_false(user.router), prefix='/api/users', tags=['user'])
+
+
 @app.exception_handler(InvalidId)
 def handle_invalid_object_id(_, _exc):
     return ORJSONResponse(status_code=400, content='错误的ObjectId')
@@ -43,7 +40,7 @@ def handle_invalid_object_id(_, _exc):
 
 @app.exception_handler(ValidationError)
 def handle_pydantic_validation_error(_, exc: ValidationError):
-    return ORJSONResponse(status_code=422, content=exc.json())
+    return ORJSONResponse(status_code=422, content=exc.errors())
 
 
 @app.exception_handler(HTTPException)

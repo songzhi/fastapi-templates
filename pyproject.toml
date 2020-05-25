@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "madforms"
+name = "app"
 version = "0.1.0"
 description = ""
 authors = ["lsongzhi <lsongzhi@163.com>"]

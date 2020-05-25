@@ -17,7 +17,7 @@ class UserBase(ModelInDb):
 class User(ModelInDb):
     username: str
     email: str
-    password: str
+    password: str = None
     scopes: List[str] = []
     created_at: datetime
 
@@ -25,7 +25,7 @@ class User(ModelInDb):
 class AuthenticatedUser(BaseModel, BaseUser):
     id: ObjectId
     username: str
-    scopes: List[str]
+    scopes: List[str] = []
     avatar: Optional[str] = None
 
     @property

@@ -9,6 +9,7 @@ from starlette import status
 from .base import BaseDao
 from ..config import TZ
 from ..models import user as models
+from ..mongo import get_collection
 from ..utils import unwrap_or_404, encryption, jwt
 
 
@@ -28,6 +29,7 @@ class UserDao(BaseDao):
 
     async def insert(self, user_create: models.UserCreate) -> models.User:
         user = models.User(**user_create.dict(), created_at=datetime.now(TZ))
+        user.password = encryption.encrypt(user.password)
         result = await self.collection.insert_one(user.dict_no_id)
         user.id = result.inserted_id
         return user
@@ -63,3 +65,6 @@ class UserDao(BaseDao):
             raise HTTPException(status.HTTP_400_BAD_REQUEST)
         token = create_user_token(user, expires=timedelta(hours=expire_hours))
         return models.LoginResponse(user=user, token=token)
+
+
+USER_DAO = UserDao(get_collection('user'))
