@@ -4,17 +4,22 @@ version = "0.1.0"
 description = ""
 authors = ["lsongzhi <lsongzhi@163.com>"]
 
+[[tool.poetry.source]]
+name="tsinghua"
+url="https://pypi.tuna.tsinghua.edu.cn/simple/"
+default = true
+
 [tool.poetry.dependencies]
 python = "^3.8"
 pyjwt = "^1.7.1"
-fastapi = "^0.54.2"
+fastapi = "^0.60.1"
 email-validator = "^1.1.1"
 aiodns = "^2.0.0"
 python-multipart = "^0.0.5"
 motor = "^2.1.0"
-orjson = "^3.0.1"
+orjson = "^3.3.0"
 click = "^7.1.2"
-uvicorn = "^0.11.5"
+uvicorn = "^0.11.6"
 pycryptodome = "^3.9.7"
 attrdict = "^2.0.1"
 
