@@ -1,14 +1,13 @@
 import re
 from enum import Enum
 from itertools import chain
-from typing import Sequence, Dict, Set, Type, Any
+from typing import Sequence, Dict, Set, Type, Any, Union
 
 from bson import ObjectId
 from fastapi import FastAPI, routing
 from fastapi.openapi.constants import REF_PREFIX
-from fastapi.openapi.utils import get_openapi_path
+from fastapi.openapi.utils import get_openapi_path, get_flat_models_from_routes
 from fastapi.routing import APIRoute
-from fastapi.utils import get_flat_models_from_routes
 from pydantic import BaseModel
 from pydantic.fields import ModelField
 from pydantic.schema import get_model_name_map, model_process_schema
@@ -37,16 +36,19 @@ def replace_field_type(field: ModelField):
 
 
 def get_model_definitions(
-        *, flat_models: Set[Type[BaseModel]], model_name_map: Dict[Type[BaseModel], str]
+        *,
+        flat_models: Set[Union[Type[BaseModel], Type[Enum]]],
+        model_name_map: Dict[Union[Type[BaseModel], Type[Enum]], str],
 ) -> Dict[str, Any]:
     definitions: Dict[str, Dict] = {}
-    for model in flat_models:
+    for model in filter(lambda m: issubclass(m, BaseModel), flat_models):
         # 将类型为ObjectId的字段的类型改为str
         for field in model.__fields__.values():
             replace_field_type(field)
     for model in flat_models:
+        # ignore mypy error until enum schemas are released
         m_schema, m_definitions, m_nested_models = model_process_schema(
-            model, model_name_map=model_name_map, ref_prefix=REF_PREFIX, by_alias=False
+            model, model_name_map=model_name_map, ref_prefix=REF_PREFIX  # type: ignore
         )
         definitions.update(m_definitions)
         model_name = model_name_map[model]

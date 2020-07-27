@@ -12,7 +12,7 @@ def cli():
 def runserver():
     import os
     os.environ['DEV'] = 'fastapi'
-    uvicorn.run('madforms.app:app', debug=True, reload=True, ssl_keyfile='statics/localhost+2-key.pem',
+    uvicorn.run('app.app:app', debug=True, reload=True, ssl_keyfile='statics/localhost+2-key.pem',
                 ssl_certfile='statics/localhost+2.pem', ssl_cert_reqs=False)
 
 

@@ -3,7 +3,6 @@ from typing import Union, Dict, Any
 
 from bson import ObjectId
 from fastapi import HTTPException
-from pydantic.typing import DictStrAny
 from starlette import status
 
 from .base import BaseDao
@@ -34,7 +33,7 @@ class UserDao(BaseDao):
         user.id = result.inserted_id
         return user
 
-    async def find_one(self, user_id: ObjectId, projection: DictStrAny = None) -> models.User:
+    async def find_one(self, user_id: ObjectId, projection: Dict[str, Any] = None) -> models.User:
         projection = projection or {
             'password': 0
         }
